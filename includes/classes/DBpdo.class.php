@@ -16,6 +16,9 @@ class DBpdo
 
     private $dbConn;
 
+    /**
+     * DBpdo constructor.
+     */
     public function __construct()
     {
         try
@@ -34,20 +37,30 @@ class DBpdo
 
     }
 
+    /**
+     * Haalt de movies uit de db
+     * @return array
+     */
     public function get_movies()
     {
         $query = "SELECT * FROM tbl_films";
         $res = $this->dbConn->query($query);
         return $res->fetchAll(PDO::FETCH_OBJ);
     }
-    public function get_movie($params)
+
+    /**
+     * Haalt een film uit de DB adhdv een titel
+     * @param $ar_params
+     * @return array
+     */
+    public function get_movie($ar_params)
     {
         //bouw query op
         $query = "SELECT * FROM tbl_films WHERE titel=:titel";
         //prepare statement
         $stmt = $this->dbConn->prepare($query);
         //bind parameters
-        $stmt->bindParam(":titel",$params);
+        $stmt->bindParam(":titel",$ar_params);
         $result = $stmt->execute();
         if($result)
         {
@@ -60,6 +73,11 @@ class DBpdo
 
     }
 
+    /**
+     * maakt een nieuwe movie entry aan
+     * @param $ar_params
+     * @return bool
+     */
     public function insert_movie($ar_params)
     {
         $query = "INSERT INTO tbl_films(titel,jaar)
